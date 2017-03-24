@@ -1,5 +1,7 @@
 'use strict';
 
+// const data = require("./data/instructors.js");
+
 const Hapi = require('hapi');
 
 // Starting a Hapi server simply requires
@@ -13,21 +15,24 @@ const server = new Hapi.Server();
 // We also need to configure CORS for requests
 // coming from a single page app
 server.connection({
-  port: process.env.port || 3001,
-  routes: {
-    cors: {
-      origin: ['*']
+    port: process.env.port || 3001,
+    routes: {
+        cors: {
+            origin: ['*']
+        }
     }
-  }
 });
 
-// Create server routes for the 
+// Create server routes for the
 // GET /instructors and GET /instructor/{slug} endpoints
+
+server.route(require('./api/instructors/routes/get_instructors'));
+server.route(require('./api/instructors/routes/get_instructor'));
 
 // Starting the server is as simple as calling
 // server.start. We can throw an error if something
 // goes wrong
 server.start(err => {
-  if (err) throw err;
-  console.log(`Server listening at ${server.info.uri}`);
+    if (err) throw err;
+    console.log(`Server listening at ${server.info.uri}`);
 });
